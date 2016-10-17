@@ -1,0 +1,13 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way to convert Unix time (seconds) to UTC time.
+# 
+# HOW TO USE
+# Commands:
+# ~$ ./todate [seconds]
+#
+# Example :
+# ~$ ./todate 1476676336
+date --date="@$1"

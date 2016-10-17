@@ -1,0 +1,12 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way to take Android phone screenshoot.
+# 
+# HOW TO USE
+# ~$ ./screenshot
+adb shell screencap -p /sdcard/screen.png
+adb pull /sdcard/screen.png screen_`date +%Y_%m_%d_%H_%M_%S`.png
+adb shell rm /sdcard/screen.png
+

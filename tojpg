@@ -1,0 +1,27 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way to convert all png files to jpg in a folder
+# 
+# HOW TO USE
+# Commands:
+# ~$ ./tojpg [folder_path] [optinal: output_folder_path]
+#
+# Example :
+# ~$ ./tojpg resources
+# ~$ ./tojpg resources resources_jpg
+if [ -z "$2" ]
+then
+    OUT_PATH='out'
+else
+    OUT_PATH=$2
+
+if [ ! -d "$OUT_PATH" ]; then
+    mkdir $OUT_PATH
+fi
+
+for file in `ls $1`
+do
+    convert $1$file $OUT_PATH/${file/.png/.jpg}
+done

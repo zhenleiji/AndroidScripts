@@ -1,0 +1,13 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way to convert Unix time (milliseconds) to UTC time.
+# 
+# HOW TO USE
+# Commands:
+# ~$ ./todate [milliseconds]
+#
+# Example :
+# ~$ ./todate 1476676336400
+todate $(($1/1000))

@@ -1,0 +1,11 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way to get WI-FI password from Android phone.
+# 
+# Attention: Only works when android phone is rooted. 
+#
+# HOW TO USE
+# ~$ ./getwifi
+adb shell cat /data/misc/wifi/wpa_supplicant.conf

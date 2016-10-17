@@ -1,0 +1,131 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way to generate images to all resolutions.
+#
+# Pre condition:
+# The script uses images from 3 folders:
+# * resources - contains all xxhdpi resources
+# * actionbar - contains all xxhdpi resources releated to action bar
+# * actionbar_land - contains all xxhdpi landscape resources related to action bar
+#
+# HOW TO USE
+# Move the script to folder that contains 3 folders mentioned before and run:
+# ~$ ./genimgs
+#
+# And voilà, the script will generate images to all resolutions. So, you just
+# need move all folder from out to your Android project.
+
+# For macs
+cd "$(dirname "$0")"
+
+# Folders
+OUT_PATH='out'
+IN_PATH='resources'
+AB_FOLDER='actionbar'
+AB_LAND_FOLDER='actionbar_land'
+
+# Android Folders
+LDPI_FOLDER='drawable-ldpi'
+MDPI_FOLDER='drawable-mdpi'
+HDPI_FOLDER='drawable-hdpi'
+XHDPI_FOLDER='drawable-xhdpi'
+XXHDPI_FOLDER='drawable-xxhdpi'
+LAND_SUFIX='-land'
+
+# Check portrait folders
+if [ ! -d "$OUT_PATH/$LDPI_FOLDER" ]; then
+    mkdir -p $OUT_PATH/$LDPI_FOLDER
+fi
+
+if [ ! -d "$OUT_PATH/$MDPI_FOLDER" ]; then
+    mkdir -p $OUT_PATH/$MDPI_FOLDER
+fi
+
+if [ ! -d "$OUT_PATH/$HDPI_FOLDER" ]; then
+    mkdir -p $OUT_PATH/$HDPI_FOLDER
+fi
+
+if [ ! -d "$OUT_PATH/$XHDPI_FOLDER" ]; then
+    mkdir -p $OUT_PATH/$XHDPI_FOLDER
+fi
+
+if [ ! -d "$OUT_PATH/$XXHDPI_FOLDER" ]; then
+    mkdir -p $OUT_PATH/$XXHDPI_FOLDER
+fi
+
+# Check landscape folders
+if [ ! -d "$OUT_PATH/$LDPI_FOLDER$LAND_SUFIX" ]; then
+    mkdir -p $OUT_PATH/$LDPI_FOLDER$LAND_SUFIX
+fi
+
+if [ ! -d "$OUT_PATH/$MDPI_FOLDER$LAND_SUFIX" ]; then
+    mkdir -p $OUT_PATH/$MDPI_FOLDER$LAND_SUFIX
+fi
+
+if [ ! -d "$OUT_PATH/$HDPI_FOLDER$LAND_SUFIX" ]; then
+    mkdir -p $OUT_PATH/$HDPI_FOLDER$LAND_SUFIX
+fi
+
+if [ ! -d "$OUT_PATH/$XHDPI_FOLDER$LAND_SUFIX" ]; then
+    mkdir -p $OUT_PATH/$XHDPI_FOLDER$LAND_SUFIX
+fi
+
+if [ ! -d "$OUT_PATH/$XXHDPI_FOLDER$LAND_SUFIX" ]; then
+    mkdir -p $OUT_PATH/$XXHDPI_FOLDER$LAND_SUFIX
+fi
+
+# Resources
+echo "Starting convert..."
+if [ -d "$IN_PATH" ]; then
+    for i in `ls $IN_PATH`
+    do
+        convert -resize 25% $IN_PATH/$i $OUT_PATH/$LDPI_FOLDER/$i
+        convert -resize 33% $IN_PATH/$i $OUT_PATH/$MDPI_FOLDER/$i
+        convert -resize 50% $IN_PATH/$i $OUT_PATH/$HDPI_FOLDER/$i
+        convert -resize 66% $IN_PATH/$i $OUT_PATH/$XHDPI_FOLDER/$i
+        cp $IN_PATH/$i $OUT_PATH/$XXHDPI_FOLDER/$i
+    done
+fi
+
+# Actionbar Portrait
+if [ -d "$AB_FOLDER" ]; then
+    for i in `ls $AB_FOLDER`
+    do
+        # Portrait
+        convert -resize 25% $AB_FOLDER/$i $OUT_PATH/$LDPI_FOLDER/$i
+        convert -resize 33% $AB_FOLDER/$i $OUT_PATH/$MDPI_FOLDER/$i
+        convert -resize 50% $AB_FOLDER/$i $OUT_PATH/$HDPI_FOLDER/$i
+        convert -resize 66% $AB_FOLDER/$i $OUT_PATH/$XHDPI_FOLDER/$i
+        cp $AB_FOLDER/$i $OUT_PATH/$XXHDPI_FOLDER/$i
+
+        # Landscape
+        convert -resize 17% $AB_FOLDER/$i $OUT_PATH/$LDPI_FOLDER$LAND_SUFIX/$i
+        convert -resize 22% $AB_FOLDER/$i $OUT_PATH/$MDPI_FOLDER$LAND_SUFIX/$i
+        convert -resize 33% $AB_FOLDER/$i $OUT_PATH/$HDPI_FOLDER$LAND_SUFIX/$i
+        convert -resize 44% $AB_FOLDER/$i $OUT_PATH/$XHDPI_FOLDER$LAND_SUFIX/$i
+        convert -resize 66% $AB_FOLDER/$i $OUT_PATH/$XXHDPI_FOLDER$LAND_SUFIX/$i
+    done
+fi
+
+# Actionbar Landscape
+if [ -d "$AB_LAND_FOLDER" ]; then
+    for i in `ls $AB_LAND_FOLDER`
+    do
+        # Portrait
+        convert -resize 38% $AB_LAND_FOLDER/$i $OUT_PATH/$LDPI_FOLDER/$i
+        convert -resize 50% $AB_LAND_FOLDER/$i $OUT_PATH/$MDPI_FOLDER/$i
+        convert -resize 75% $AB_LAND_FOLDER/$i $OUT_PATH/$HDPI_FOLDER/$i
+        cp $AB_LAND_FOLDER/$i $OUT_PATH/$XHDPI_FOLDER/$i
+        convert -resize 150% $AB_LAND_FOLDER/$i $OUT_PATH/$XXHDPI_FOLDER/$i
+
+        # Landscape
+        convert -resize 25% $AB_LAND_FOLDER/$i $OUT_PATH/$LDPI_FOLDER$LAND_SUFIX/$i
+        convert -resize 33% $AB_LAND_FOLDER/$i $OUT_PATH/$MDPI_FOLDER$LAND_SUFIX/$i
+        convert -resize 50% $AB_LAND_FOLDER/$i $OUT_PATH/$HDPI_FOLDER$LAND_SUFIX/$i
+        convert -resize 66% $AB_LAND_FOLDER/$i $OUT_PATH/$XHDPI_FOLDER$LAND_SUFIX/$i
+        cp $AB_LAND_FOLDER/$i $OUT_PATH/$XXHDPI_FOLDER$LAND_SUFIX/$i
+    done
+fi
+echo "Finished!"

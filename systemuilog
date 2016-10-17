@@ -1,0 +1,66 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way to enable log on systemui without reboot.
+
+# HOW TO USE
+# TAG - tag name, e.g. ZenModePanel, usually it is class name.
+# priority - the priority of log, could be (default: V):
+#     v - Verbose (lowest priority)
+#     d - Debug
+#     i - Info
+#     w - Warning
+#     e - Error
+#     f - Fatal
+#     s - Silent (highest priority, on which nothing is ever printed)
+# Commands:
+# ~$ ./systemuilog.sh [TAG] [priority]
+#
+# Example 1:
+# ~$ ./systemuilog.sh ZenModePanel
+#
+# Example 2:
+# ~$ ./systemuilog.sh ZenModePanel w
+
+# Handle input arguments
+if [ -z "$1" ]; then
+    echo "ERROR: No argument supplied"
+else
+    # Set priority
+    PRIORITY="VERBOSE"
+    if [ -n "$2" ]; then
+        if [ "$2" == "d" -o "$2" == "D" ]; then
+            PRIORITY="DEBUG"
+        elif [ "$2" == "i" -o "$2" == "I" ]; then
+            PRIORITY="INFO"
+        elif [ "$2" == "w" -o "$2" == "W" ]; then
+            PRIORITY="WARNING"
+        elif [ "$2" == "e" -o "$2" == "E" ]; then
+            PRIORITY="FATAL"
+        elif [ "$2" == "f" -o "$2" == "F" ]; then
+            PRIORITY="SILENT"
+        fi
+    fi
+fi
+
+echo "Enabling $1 log with $PRIORITY priority ."
+# Set root mode
+adb root
+
+# Delay to connect
+sleep 1
+
+# Waiting for connection
+while [ `adb devices | wc -l` -ne 3 ]; do
+    sleep 1
+done
+
+# Get pid of systemui process
+PID=`adb shell ps | grep systemui | tr -s [:space:] ' ' | cut -d' ' -f2`
+
+# Kill the process, so systemui process will restart
+adb shell kill -9 $PID
+
+adb shell setprop log.tag.$1 $PRIORITY
+echo "Done."

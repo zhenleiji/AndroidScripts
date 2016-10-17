@@ -1,0 +1,28 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way unlock your Android phone.
+# Attention: You phone must allow install unknown source.
+# 
+# HOW TO USE
+# ~$ ./unlock
+
+if [ $# -eq 0 ]
+then
+    if [ -z `adb shell pm list package | grep io.appium.unlock` ]
+    then
+        adb install /opt/Programs/Script/unlock_apk-debug.apk
+    fi
+    adb shell "am start -S -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n io.appium.unlock/.Unlock"
+elif [ $# -eq 1 ]
+then
+    if [ "$1" == "-r" ] || [ "$1" == "r" ]
+    then
+        adb uninstall io.appium.unlock
+    else
+        echo "Invalid parameter $1. User -r or r"
+    fi
+else
+    echo "Illegal number of parameters"
+fi

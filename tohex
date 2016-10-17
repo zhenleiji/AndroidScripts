@@ -1,0 +1,14 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way to convert decimal number to hexadecimal
+# 
+# HOW TO USE
+# Commands:
+# ~$ ./tohex [0-100]
+#
+# Example :
+# ~$ ./tohex 67
+NUM=$(($1*255+50))
+echo 'ibase=10;obase=16;'$NUM/100'' | bc

@@ -1,0 +1,45 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way to enable log on device with verbose priority.
+#
+# HOW TO USE
+# Commands:
+# ~$ ./setlocalprop.sh [TAG] [TAG] [TAG]..
+#
+# Example :
+# ~$ ./setlocalprop.sh ZenModeHelper ZenModePanel ZenModeController VolumeUI ManagedServices
+if [ "$#" -eq 0 ]; then
+    echo "Forgot to add tags as parameter."
+else
+	echo "Creating local.prop file..."
+	LOCAL_PROP="local.prop"
+		
+	# Set root mode
+	adb root
+
+	# Delay to connect
+	sleep 1
+
+	# Waiting for connection
+	while [ `adb devices | wc -l` -ne 3 ]; do
+	    sleep 1
+	done
+
+	if [ -f $LOCAL_PROP ]; then
+		rm $LOCAL_PROP
+	fi
+
+	for tag in "$@"; do
+		echo log.tag.$tag=VERBOSE >> $LOCAL_PROP
+	done
+
+	echo "Adding local.prop file into device..."
+	adb push $LOCAL_PROP /data/$LOCAL_PROP
+	adb shell chmod 644 /data/$LOCAL_PROP
+	adb shell chown root.root /data/$LOCAL_PROP
+	adb reboot
+	echo "Reboot device..."
+	rm $LOCAL_PROP
+fi

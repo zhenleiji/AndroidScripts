@@ -1,0 +1,348 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Translate sysui log codes into strings. Following the filters:
+# - sysui_view_visibility
+# - sysui_action
+# - sysui_count
+# - sysui_histogram
+#
+# HOW TO USE
+# Return all filters:
+# ~$ ./sysui.sh [aplogcat-events.txt path]
+# ~$ adb logcat -b events | ./sysui.sh
+#
+# Return a specific filter:
+# ~$ ./sysui.sh [aplogcat-events.txt path] | grep sysui_view_visibility # Filtered by sysui_view_visibility
+# ~$ ./sysui.sh [aplogcat-events.txt path] | grep sysui_action          # Filtered by sysui_action
+# ~$ ./sysui.sh [aplogcat-events.txt path] | grep sysui_count           # Filtered by sysui_count
+# ~$ ./sysui.sh [aplogcat-events.txt path] | grep sysui_histogram       # Filtered by sysui_histogram
+
+function translate {
+    TAG_VIEW_VISIBILITY='sysui_view_visibility'
+    TAG_ACTION='sysui_action'
+    TAG_COUNT='sysui_count'
+    TAG_HISTOGRAM='sysui_histogram'
+
+    WHITE_LIST=($TAG_VIEW_VISIBILITY $TAG_ACTION $TAG_COUNT $TAG_HISTOGRAM)
+    FILTER="$(printf '%s\n' "${WHITE_LIST[@]}" | paste -sd '|')"
+
+    while read line; do
+        if [[ $line =~ $FILTER ]]
+        then
+            # Tags
+            line=${line/[0,/[VIEW_UNKNOWN,}
+            line=${line/[1,/[MAIN_SETTINGS,}
+            line=${line/[2,/[ACCESSIBILITY,}
+            line=${line/[3,/[ACCESSIBILITY_CAPTION_PROPERTIES,}
+            line=${line/[4,/[ACCESSIBILITY_SERVICE,}
+            line=${line/[5,/[ACCESSIBILITY_TOGGLE_DALTONIZER,}
+            line=${line/[6,/[ACCESSIBILITY_TOGGLE_GLOBAL_GESTURE,}
+            line=${line/[7,/[ACCESSIBILITY_TOGGLE_SCREEN_MAGNIFICATION,}
+            line=${line/[8,/[ACCOUNT,}
+            line=${line/[9,/[ACCOUNTS_ACCOUNT_SYNC,}
+            line=${line/[10,/[ACCOUNTS_CHOOSE_ACCOUNT_ACTIVITY,}
+            line=${line/[11,/[ACCOUNTS_MANAGE_ACCOUNTS,}
+            line=${line/[12,/[APN,}
+            line=${line/[13,/[APN_EDITOR,}
+            line=${line/[14,/[APP_OPS_DETAILS,}
+            line=${line/[15,/[APP_OPS_SUMMARY,}
+            line=${line/[16,/[APPLICATION,}
+            line=${line/[17,/[APPLICATIONS_APP_LAUNCH,}
+            line=${line/[18,/[APPLICATIONS_APP_PERMISSION,}
+            line=${line/[19,/[APPLICATIONS_APP_STORAGE,}
+            line=${line/[20,/[APPLICATIONS_INSTALLED_APP_DETAILS,}
+            line=${line/[21,/[APPLICATIONS_PROCESS_STATS_DETAIL,}
+            line=${line/[22,/[APPLICATIONS_PROCESS_STATS_MEM_DETAIL,}
+            line=${line/[23,/[APPLICATIONS_PROCESS_STATS_UI,}
+            line=${line/[24,/[BLUETOOTH,}
+            line=${line/[25,/[BLUETOOTH_DEVICE_PICKER,}
+            line=${line/[26,/[BLUETOOTH_DEVICE_PROFILES,}
+            line=${line/[27,/[CHOOSE_LOCK_GENERIC,}
+            line=${line/[28,/[CHOOSE_LOCK_PASSWORD,}
+            line=${line/[29,/[CHOOSE_LOCK_PATTERN,}
+            line=${line/[30,/[CONFIRM_LOCK_PASSWORD,}
+            line=${line/[31,/[CONFIRM_LOCK_PATTERN,}
+            line=${line/[32,/[CRYPT_KEEPER,}
+            line=${line/[33,/[CRYPT_KEEPER_CONFIRM,}
+            line=${line/[34,/[DASHBOARD_SEARCH_RESULTS,}
+            line=${line/[35,/[DASHBOARD_SUMMARY,}
+            line=${line/[36,/[DATA_USAGE,}
+            line=${line/[37,/[DATA_USAGE_SUMMARY,}
+            line=${line/[38,/[DATE_TIME,}
+            line=${line/[39,/[DEVELOPMENT,}
+            line=${line/[40,/[DEVICEINFO,}
+            line=${line/[41,/[DEVICEINFO_IMEI_INFORMATION,}
+            line=${line/[42,/[DEVICEINFO_MEMORY,}
+            line=${line/[43,/[DEVICEINFO_SIM_STATUS,}
+            line=${line/[44,/[DEVICEINFO_STATUS,}
+            line=${line/[45,/[DEVICEINFO_USB,}
+            line=${line/[46,/[DISPLAY,}
+            line=${line/[47,/[DREAM,}
+            line=${line/[48,/[ENCRYPTION,}
+            line=${line/[49,/[FINGERPRINT,}
+            line=${line/[50,/[FINGERPRINT_ENROLL,}
+            line=${line/[51,/[FUELGAUGE_BATTERY_HISTORY_DETAIL,}
+            line=${line/[52,/[FUELGAUGE_BATTERY_SAVER,}
+            line=${line/[53,/[FUELGAUGE_POWER_USAGE_DETAIL,}
+            line=${line/[54,/[FUELGAUGE_POWER_USAGE_SUMMARY,}
+            line=${line/[55,/[HOME,}
+            line=${line/[56,/[ICC_LOCK,}
+            line=${line/[57,/[INPUTMETHOD_LANGUAGE,}
+            line=${line/[58,/[INPUTMETHOD_KEYBOARD,}
+            line=${line/[59,/[INPUTMETHOD_SPELL_CHECKERS,}
+            line=${line/[60,/[INPUTMETHOD_SUBTYPE_ENABLER,}
+            line=${line/[61,/[INPUTMETHOD_USER_DICTIONARY,}
+            line=${line/[62,/[INPUTMETHOD_USER_DICTIONARY_ADD_WORD,}
+            line=${line/[63,/[LOCATION,}
+            line=${line/[64,/[LOCATION_MODE,}
+            line=${line/[65,/[MANAGE_APPLICATIONS,}
+            line=${line/[66,/[MASTER_CLEAR,}
+            line=${line/[67,/[MASTER_CLEAR_CONFIRM,}
+            line=${line/[68,/[NET_DATA_USAGE_METERED,}
+            line=${line/[69,/[NFC_BEAM,}
+            line=${line/[70,/[NFC_PAYMENT,}
+            line=${line/[71,/[NOTIFICATION,}
+            line=${line/[72,/[NOTIFICATION_APP_NOTIFICATION,}
+            line=${line/[73,/[NOTIFICATION_OTHER_SOUND,}
+            line=${line/[74,/[NOTIFICATION_REDACTION,}
+            line=${line/[75,/[NOTIFICATION_STATION,}
+            line=${line/[76,/[NOTIFICATION_ZEN_MODE,}
+            line=${line/[77,/[OWNER_INFO,}
+            line=${line/[78,/[PRINT_JOB_SETTINGS,}
+            line=${line/[79,/[PRINT_SERVICE_SETTINGS,}
+            line=${line/[80,/[PRINT_SETTINGS,}
+            line=${line/[81,/[PRIVACY,}
+            line=${line/[82,/[PROXY_SELECTOR,}
+            line=${line/[83,/[RESET_NETWORK,}
+            line=${line/[84,/[RESET_NETWORK_CONFIRM,}
+            line=${line/[85,/[RUNNING_SERVICE_DETAILS,}
+            line=${line/[86,/[SCREEN_PINNING,}
+            line=${line/[87,/[SECURITY,}
+            line=${line/[88,/[SIM,}
+            line=${line/[89,/[TESTING,}
+            line=${line/[90,/[TETHER,}
+            line=${line/[91,/[TRUST_AGENT,}
+            line=${line/[92,/[TRUSTED_CREDENTIALS,}
+            line=${line/[93,/[TTS_ENGINE_SETTINGS,}
+            line=${line/[94,/[TTS_TEXT_TO_SPEECH,}
+            line=${line/[95,/[USAGE_ACCESS,}
+            line=${line/[96,/[USER,}
+            line=${line/[97,/[USERS_APP_RESTRICTIONS,}
+            line=${line/[98,/[USER_DETAILS,}
+            line=${line/[99,/[VOICE_INPUT,}
+            line=${line/[100,/[VPN,}
+            line=${line/[101,/[WALLPAPER_TYPE,}
+            line=${line/[102,/[WFD_WIFI_DISPLAY,}
+            line=${line/[103,/[WIFI,}
+            line=${line/[104,/[WIFI_ADVANCED,}
+            line=${line/[105,/[WIFI_CALLING,}
+            line=${line/[106,/[WIFI_SAVED_ACCESS_POINTS,}
+            line=${line/[107,/[WIFI_APITEST,}
+            line=${line/[108,/[WIFI_INFO,}
+            line=${line/[109,/[WIFI_P2P,}
+            line=${line/[110,/[WIRELESS,}
+            line=${line/[111,/[QS_PANEL,}
+            line=${line/[112,/[QS_AIRPLANEMODE,}
+            line=${line/[113,/[QS_BLUETOOTH,}
+            line=${line/[114,/[QS_CAST,}
+            line=${line/[115,/[QS_CELLULAR,}
+            line=${line/[116,/[QS_COLORINVERSION,}
+            line=${line/[117,/[QS_DATAUSAGEDETAIL,}
+            line=${line/[118,/[QS_DND,}
+            line=${line/[119,/[QS_FLASHLIGHT,}
+            line=${line/[120,/[QS_HOTSPOT,}
+            line=${line/[121,/[QS_INTENT,}
+            line=${line/[122,/[QS_LOCATION,}
+            line=${line/[123,/[QS_ROTATIONLOCK,}
+            line=${line/[124,/[QS_USERDETAILITE,}
+            line=${line/[125,/[QS_USERDETAIL,}
+            line=${line/[126,/[QS_WIFI,}
+            line=${line/[127,/[NOTIFICATION_PANEL,}
+            line=${line/[128,/[NOTIFICATION_ITEM,}
+            line=${line/[129,/[NOTIFICATION_ITEM_ACTION,}
+            line=${line/[130,/[APPLICATIONS_ADVANCED,}
+            line=${line/[131,/[LOCATION_SCANNING,}
+            line=${line/[132,/[MANAGE_APPLICATIONS_ALL,}
+            line=${line/[133,/[MANAGE_APPLICATIONS_NOTIFICATIONS,}
+            line=${line/[134,/[ACTION_WIFI_ADD_NETWORK,}
+            line=${line/[135,/[ACTION_WIFI_CONNECT,}
+            line=${line/[136,/[ACTION_WIFI_FORCE_SCAN,}
+            line=${line/[137,/[ACTION_WIFI_FORGET,}
+            line=${line/[138,/[ACTION_WIFI_OFF,}
+            line=${line/[139,/[ACTION_WIFI_ON,}
+            line=${line/[140,/[MANAGE_PERMISSIONS,}
+            line=${line/[141,/[NOTIFICATION_ZEN_MODE_PRIORITY,}
+            line=${line/[142,/[NOTIFICATION_ZEN_MODE_AUTOMATION,}
+            line=${line/[143,/[MANAGE_DOMAIN_URLS,}
+            line=${line/[144,/[NOTIFICATION_ZEN_MODE_SCHEDULE_RULE,}
+            line=${line/[145,/[NOTIFICATION_ZEN_MODE_EXTERNAL_RULE,}
+            line=${line/[146,/[NOTIFICATION_ZEN_MODE_EVENT_RULE,}
+            line=${line/[147,/[ACTION_BAN_APP_NOTES,}
+            line=${line/[148,/[ACTION_DISMISS_ALL_NOTES,}
+            line=${line/[149,/[QS_DND_DETAILS,}
+            line=${line/[150,/[QS_BLUETOOTH_DETAILS,}
+            line=${line/[151,/[QS_CAST_DETAILS,}
+            line=${line/[152,/[QS_WIFI_DETAILS,}
+            line=${line/[153,/[QS_WIFI_TOGGLE,}
+            line=${line/[154,/[QS_BLUETOOTH_TOGGLE,}
+            line=${line/[155,/[QS_CELLULAR_TOGGLE,}
+            line=${line/[156,/[QS_SWITCH_USER,}
+            line=${line/[157,/[QS_CAST_SELECT,}
+            line=${line/[158,/[QS_CAST_DISCONNECT,}
+            line=${line/[159,/[ACTION_BLUETOOTH_TOGGLE,}
+            line=${line/[160,/[ACTION_BLUETOOTH_SCAN,}
+            line=${line/[161,/[ACTION_BLUETOOTH_RENAME,}
+            line=${line/[162,/[ACTION_BLUETOOTH_FILES,}
+            line=${line/[163,/[QS_DND_TIME,}
+            line=${line/[164,/[QS_DND_CONDITION_SELECT,}
+            line=${line/[165,/[QS_DND_ZEN_SELECT,}
+            line=${line/[166,/[QS_DND_TOGGLE,}
+            line=${line/[167,/[ACTION_ZEN_ALLOW_REMINDERS,}
+            line=${line/[168,/[ACTION_ZEN_ALLOW_EVENTS,}
+            line=${line/[169,/[ACTION_ZEN_ALLOW_MESSAGES,}
+            line=${line/[170,/[ACTION_ZEN_ALLOW_CALLS,}
+            line=${line/[171,/[ACTION_ZEN_ALLOW_REPEAT_CALLS,}
+            line=${line/[172,/[ACTION_ZEN_ADD_RULE,}
+            line=${line/[173,/[ACTION_ZEN_ADD_RULE_OK,}
+            line=${line/[174,/[ACTION_ZEN_DELETE_RULE,}
+            line=${line/[175,/[ACTION_ZEN_DELETE_RULE_OK,}
+            line=${line/[176,/[ACTION_ZEN_ENABLE_RULE,}
+            line=${line/[177,/[ACTION_AIRPLANE_TOGGLE,}
+            line=${line/[178,/[ACTION_CELL_DATA_TOGGLE,}
+            line=${line/[179,/[NOTIFICATION_ACCESS,}
+            line=${line/[180,/[NOTIFICATION_ZEN_MODE_ACCESS,}
+            line=${line/[181,/[APPLICATIONS_DEFAULT_APPS,}
+            line=${line/[182,/[APPLICATIONS_STORAGE_APPS,}
+            line=${line/[183,/[APPLICATIONS_USAGE_ACCESS_DETAIL,}
+            line=${line/[184,/[APPLICATIONS_HIGH_POWER_APPS,}
+            line=${line/[185,/[FUELGAUGE_HIGH_POWER_DETAILS,}
+            line=${line/[186,/[ACTION_LS_UNLOCK,}
+            line=${line/[187,/[ACTION_LS_SHADE,}
+            line=${line/[188,/[ACTION_LS_HINT,}
+            line=${line/[189,/[ACTION_LS_CAMERA,}
+            line=${line/[190,/[ACTION_LS_DIALER,}
+            line=${line/[191,/[ACTION_LS_LOCK,}
+            line=${line/[192,/[ACTION_LS_NOTE,}
+            line=${line/[193,/[ACTION_LS_QS,}
+            line=${line/[194,/[ACTION_SHADE_QS_PULL,}
+            line=${line/[195,/[ACTION_SHADE_QS_TAP,}
+            line=${line/[196,/[LOCKSCREEN,}
+            line=${line/[197,/[BOUNCER,}
+            line=${line/[198,/[SCREEN,}
+            line=${line/[199,/[NOTIFICATION_ALERT,}
+            line=${line/[200,/[ACTION_EMERGENCY_CALL,}
+            line=${line/[201,/[APPLICATIONS_MANAGE_ASSIST,}
+            line=${line/[202,/[PROCESS_STATS_SUMMARY,}
+            line=${line/[203,/[ACTION_ROTATION_LOCK,}
+            line=${line/[204,/[ACTION_NOTE_CONTROLS,}
+            line=${line/[205,/[ACTION_NOTE_INFO,}
+            line=${line/[206,/[ACTION_APP_NOTE_SETTINGS,}
+            line=${line/[207,/[VOLUME_DIALOG,}
+            line=${line/[208,/[VOLUME_DIALOG_DETAILS,}
+            line=${line/[209,/[ACTION_VOLUME_SLIDER,}
+            line=${line/[210,/[ACTION_VOLUME_STREAM,}
+            line=${line/[211,/[ACTION_VOLUME_KEY,}
+            line=${line/[212,/[ACTION_VOLUME_ICON,}
+            line=${line/[213,/[ACTION_RINGER_MODE,}
+            line=${line/[214,/[ACTION_ACTIVITY_CHOOSER_SHOWN,}
+            line=${line/[215,/[ACTION_ACTIVITY_CHOOSER_PICKED_APP_TARGET,}
+            line=${line/[216,/[ACTION_ACTIVITY_CHOOSER_PICKED_SERVICE_TARGET,}
+            line=${line/[217,/[ACTION_ACTIVITY_CHOOSER_PICKED_STANDARD_TARGET,}
+            line=${line/[218,/[ACTION_BRIGHTNESS,}
+            line=${line/[219,/[ACTION_BRIGHTNESS_AUTO,}
+            line=${line/[220,/[BRIGHTNESS_DIALOG,}
+            line=${line/[221,/[SYSTEM_ALERT_WINDOW_APPS,}
+            line=${line/[222,/[DREAMING,}
+            line=${line/[223,/[DOZING,}
+            line=${line/[224,/[OVERVIEW_ACTIVITY,}
+            line=${line/[225,/[ABOUT_LEGAL_SETTINGS,}
+            line=${line/[226,/[ACTION_SEARCH_RESULTS,}
+            line=${line/[227,/[TUNER,}
+            line=${line/[228,/[TUNER_QS,}
+            line=${line/[229,/[TUNER_DEMO_MODE,}
+            line=${line/[230,/[TUNER_QS_REORDER,}
+            line=${line/[231,/[TUNER_QS_ADD,}
+            line=${line/[232,/[TUNER_QS_REMOVE,}
+            line=${line/[233,/[TUNER_STATUS_BAR_ENABLE,}
+            line=${line/[234,/[TUNER_STATUS_BAR_DISABLE,}
+            line=${line/[235,/[TUNER_DEMO_MODE_ENABLED,}
+            line=${line/[236,/[TUNER_DEMO_MODE_ON,}
+            line=${line/[237,/[TUNER_BATTERY_PERCENTAGE,}
+            line=${line/[238,/[FUELGAUGE_INACTIVE_APPS,}
+            line=${line/[239,/[ACTION_ASSIST_LONG_PRESS,}
+            line=${line/[240,/[FINGERPRINT_ENROLLING,}
+            line=${line/[241,/[FINGERPRINT_FIND_SENSOR,}
+            line=${line/[242,/[FINGERPRINT_ENROLL_FINISH,}
+            line=${line/[243,/[FINGERPRINT_ENROLL_INTRO,}
+            line=${line/[244,/[FINGERPRINT_ENROLL_ONBOARD,}
+            line=${line/[245,/[FINGERPRINT_ENROLL_SIDECAR,}
+            line=${line/[246,/[FINGERPRINT_ENROLLING_SETUP,}
+            line=${line/[247,/[FINGERPRINT_FIND_SENSOR_SETUP,}
+            line=${line/[248,/[FINGERPRINT_ENROLL_FINISH_SETUP,}
+            line=${line/[249,/[FINGERPRINT_ENROLL_INTRO_SETUP,}
+            line=${line/[250,/[FINGERPRINT_ENROLL_ONBOARD_SETUP,}
+            line=${line/[251,/[ACTION_FINGERPRINT_ENROLL,}
+            line=${line/[252,/[ACTION_FINGERPRINT_AUTH,}
+            line=${line/[253,/[ACTION_FINGERPRINT_DELETE,}
+            line=${line/[254,/[ACTION_FINGERPRINT_RENAME,}
+            line=${line/[255,/[ACTION_DOUBLE_TAP_POWER_CAMERA_GESTURE,}
+            line=${line/[256,/[ACTION_WIGGLE_CAMERA_GESTURE,}
+            line=${line/[27601,/[QS_DATA,}
+            line=${line/[27602,/[QS_DATA_TOGGLE,}
+            line=${line/[27603,/[QS_DETAIL,}
+
+            # Visibility
+            if [[ $line == *$TAG_VIEW_VISIBILITY* ]]
+            then
+                line=${line/,0]/,invisible]}
+                line=${line/,100]/,visible]}
+            fi
+
+            # Zen Mode
+            if [[ $line == *$TAG_COUNT* ]]
+            then
+                line=${line/[dnd_mode_0,/[DND OFF,}
+                line=${line/[dnd_mode_1,/[DND PRIORITY ONLY,}
+                line=${line/[dnd_mode_2,/[DND TOTAL SILENCE,}
+                line=${line/[dnd_mode_3,/[DND ALARM ONLY,}
+            fi
+
+            # Ringer Mode
+            if [[ $line == *$TAG_ACTION* ]]
+            then
+                line=${line/[ACTION_RINGER_MODE,0/[ACTION_RINGER_MODE,RINGER_MODE_SILENT}
+                line=${line/[ACTION_RINGER_MODE,1/[ACTION_RINGER_MODE,RINGER_MODE_VIBRATE}
+                line=${line/[ACTION_RINGER_MODE,2/[ACTION_RINGER_MODE,RINGER_MODE_NORMAL}
+            fi
+
+            # Type of stream
+            if [[ $line == *$TAG_ACTION* ]]
+            then
+                line=${line/[ACTION_VOLUME_STREAM,-1/[ACTION_VOLUME_STREAM,STREAM_DEFAULT}
+                line=${line/[ACTION_VOLUME_STREAM,0/[ACTION_VOLUME_STREAM,STREAM_VOICE_CALL}
+                line=${line/[ACTION_VOLUME_STREAM,1/[ACTION_VOLUME_STREAM,STREAM_SYSTEM}
+                line=${line/[ACTION_VOLUME_STREAM,2/[ACTION_VOLUME_STREAM,STREAM_RING}
+                line=${line/[ACTION_VOLUME_STREAM,3/[ACTION_VOLUME_STREAM,STREAM_MUSIC}
+                line=${line/[ACTION_VOLUME_STREAM,4/[ACTION_VOLUME_STREAM,STREAM_ALARM}
+                line=${line/[ACTION_VOLUME_STREAM,5/[ACTION_VOLUME_STREAM,STREAM_NOTIFICATION}
+                line=${line/[ACTION_VOLUME_STREAM,6/[ACTION_VOLUME_STREAM,STREAM_BLUETOOTH_SCO}
+                line=${line/[ACTION_VOLUME_STREAM,7/[ACTION_VOLUME_STREAM,STREAM_SYSTEM_ENFORCED}
+                line=${line/[ACTION_VOLUME_STREAM,8/[ACTION_VOLUME_STREAM,STREAM_DTMF}
+                line=${line/[ACTION_VOLUME_STREAM,9/[ACTION_VOLUME_STREAM,STREAM_TTS}
+            fi
+
+            # Translated
+            echo $line
+        fi
+    done
+}
+
+# Check if the parameter is a file
+if [[ -f "$1" ]]
+then
+    cat $1 | translate
+else
+    translate $1
+fi
