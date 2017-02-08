@@ -10,4 +10,8 @@
 #
 # Example :
 # ~$ ./todate 1476676336
-date --date="@$1"
+if [ "$(uname)" == "Darwin" ]; then
+    date -r $1 +'%Y-%m-%d %H:%M:%S'
+else
+    date --date="@$1"
+fi
