@@ -1,0 +1,17 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way to extract phone information
+#
+# HOW TO USE
+# ~$ ./getprop
+echo "Manufacturer: "`adb shell getprop ro.product.manufacturer`
+echo "Name: "`adb shell getprop ro.product.name`
+echo "Model: "`adb shell getprop ro.product.model`
+echo "Android Version: "`adb shell getprop ro.build.version.release`
+echo "Android SDK: "`adb shell getprop ro.build.version.sdk`
+echo
+echo "Date: "`adb shell getprop ro.build.date`
+echo "Timezone: "`adb shell getprop persist.sys.timezone`
+echo "Locale: "`adb shell getprop persist.sys.locale`

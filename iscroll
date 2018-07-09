@@ -1,0 +1,13 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way to perform infinite scroll (crtl+C to stop)
+#
+# HOW TO USE
+# ~$ ./iscroll
+while true
+do
+	adb shell input swipe 540 1800 540 -5000
+	sleep 1
+done
