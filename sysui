@@ -10,14 +10,14 @@
 #
 # HOW TO USE
 # Return all filters:
-# ~$ ./sysui.sh [aplogcat-events.txt path]
-# ~$ adb logcat -b events | ./sysui.sh
+# ~$ ./sysui [aplogcat-events.txt path]
+# ~$ adb logcat -b events | ./sysui
 #
 # Return a specific filter:
-# ~$ ./sysui.sh [aplogcat-events.txt path] | grep sysui_view_visibility # Filtered by sysui_view_visibility
-# ~$ ./sysui.sh [aplogcat-events.txt path] | grep sysui_action          # Filtered by sysui_action
-# ~$ ./sysui.sh [aplogcat-events.txt path] | grep sysui_count           # Filtered by sysui_count
-# ~$ ./sysui.sh [aplogcat-events.txt path] | grep sysui_histogram       # Filtered by sysui_histogram
+# ~$ ./sysui [aplogcat-events.txt path] | grep sysui_view_visibility # Filtered by sysui_view_visibility
+# ~$ ./sysui [aplogcat-events.txt path] | grep sysui_action          # Filtered by sysui_action
+# ~$ ./sysui [aplogcat-events.txt path] | grep sysui_count           # Filtered by sysui_count
+# ~$ ./sysui [aplogcat-events.txt path] | grep sysui_histogram       # Filtered by sysui_histogram
 
 function translate {
     TAG_VIEW_VISIBILITY='sysui_view_visibility'

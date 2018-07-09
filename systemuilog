@@ -15,13 +15,13 @@
 #     f - Fatal
 #     s - Silent (highest priority, on which nothing is ever printed)
 # Commands:
-# ~$ ./systemuilog.sh [TAG] [priority]
+# ~$ ./systemuilog [TAG] [priority]
 #
 # Example 1:
-# ~$ ./systemuilog.sh ZenModePanel
+# ~$ ./systemuilog ZenModePanel
 #
 # Example 2:
-# ~$ ./systemuilog.sh ZenModePanel w
+# ~$ ./systemuilog ZenModePanel w
 
 # Handle input arguments
 if [ -z "$1" ]; then
