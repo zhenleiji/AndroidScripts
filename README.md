@@ -116,6 +116,35 @@ Easy way unlock your Android phone.
 ```
 ~$ ./unlock
 ```
+### 10. getprop
+Easy way to extract phone information.
+
+**HOW TO USE**
+
+Commands:
+```
+~$ ./getprop
+```
+
+Example:
+![](https://image.ibb.co/djDzp8/Screen_Shot_2018_07_09_at_14_47_07.png)
+
+### 11. hardcoded
+Easy way to check hardcoded strings.
+
+**HOW TO USE**
+
+```
+~$ ./hardcoded
+```
+### 12. iscroll
+Easy way to perform infinite scroll (**crtl+C** to stop)
+
+**HOW TO USE**
+
+```
+~$ ./iscroll
+```
 ## Framework
 Useful scripts for framework developer (middleware).
 ### 1. setlocalprop
@@ -125,11 +154,11 @@ Easy way to enable log on device with verbose priority. If you are interested to
 
 Commands:
 ```
-~$ ./setlocalprop.sh [TAG] [TAG] [TAG]..
+~$ ./setlocalprop [TAG] [TAG] [TAG]..
 ```
 Example :
 ```
-~$ ./setlocalprop.sh ZenModeHelper ZenModePanel ZenModeController VolumeUI ManagedServices
+~$ ./setlocalprop ZenModeHelper ZenModePanel ZenModeController VolumeUI ManagedServices
 ```
 ### 2. systemuilog
 Easy way to enable log on systemui without reboot.
@@ -147,15 +176,15 @@ priority - the priority of log, could be (default: V):
 * s - Silent (highest priority, on which nothing is ever printed)
 Commands:
 ```
-~$ ./systemuilog.sh [TAG] [priority]
+~$ ./systemuilog [TAG] [priority]
 ```
 Example 1:
 ```
-~$ ./systemuilog.sh ZenModePanel
+~$ ./systemuilog ZenModePanel
 ```
 Example 2:
 ```
-~$ ./systemuilog.sh ZenModePanel w
+~$ ./systemuilog ZenModePanel w
 ```
 ### 3. sysui
 Translate sysui log codes into strings. Following the filters:
@@ -168,15 +197,15 @@ Translate sysui log codes into strings. Following the filters:
 
 Return all filters:
 ```
-~$ ./sysui.sh [aplogcat-events.txt path]
-~$ adb logcat -b events | ./sysui.sh
+~$ ./sysui [aplogcat-events.txt path]
+~$ adb logcat -b events | ./sysui
 ```
 Return a specific filter:
 ```
-~$ ./sysui.sh [aplogcat-events.txt path] | grep sysui_view_visibility Filtered by sysui_view_visibility
-~$ ./sysui.sh [aplogcat-events.txt path] | grep sysui_action          Filtered by sysui_action
-~$ ./sysui.sh [aplogcat-events.txt path] | grep sysui_count           Filtered by sysui_count
-~$ ./sysui.sh [aplogcat-events.txt path] | grep sysui_histogram       Filtered by sysui_histogram
+~$ ./sysui [aplogcat-events.txt path] | grep sysui_view_visibility Filtered by sysui_view_visibility
+~$ ./sysui [aplogcat-events.txt path] | grep sysui_action          Filtered by sysui_action
+~$ ./sysui [aplogcat-events.txt path] | grep sysui_count           Filtered by sysui_count
+~$ ./sysui [aplogcat-events.txt path] | grep sysui_histogram       Filtered by sysui_histogram
 ```
 # Setup
 Download the scripts and add bash script folder to path. Please see below the steps:
