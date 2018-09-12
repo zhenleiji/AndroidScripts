@@ -12,15 +12,15 @@
 # ~$ ./monkey com.itspen.app
 # ~$ ./monkey com.itspen.app 5000000 3 345
 
-FOLDER=MonkeyLog
 MONKEY_LOG=monkey.txt
 LOGCAT_LOG=logcat.txt
-MONKEY_PATH=$HOME/$FOLDER/
 ROUND=1
 
-if [ ! -d "$MONKEY_PATH" ]
+if [ $# -eq 0 ]
 then
-    mkdir MONKEY_PATH
+    echo "No arguments supplied! How to use:"
+    echo "./monkey [PACKAGE] [optional: NUMBER_OF_EVENTS (default: 720000)] [optional: ROUND (default: 1)] [optional: SEED]"
+    exit 1
 fi
 
 if [ -z "$2" ]
@@ -44,17 +44,31 @@ do
     then
         if [ "$4" ]
         then
-            RAND=$4
+            SEED=$4
         else
-            RAND=$RANDOM
+            SEED=$RANDOM
         fi
-        OUTPUT_PATH=$(date +"$MONKEY_PATH%d_%m_%Y_%T_$RAND/")
+        OUTPUT_PATH=$(date +"%Y_%m_%d_%H_%M_%S_$SEED/")
         mkdir $OUTPUT_PATH
-        adb shell monkey -p $1 --hprof --pct-touch 30 --pct-motion 30 --pct-trackball 0 --pct-nav 0 --pct-majornav 20 --pct-appswitch 10 --pct-anyevent 10 --pct-syskeys 0 -s $RAND -v --throttle 300 $NUMBER_OF_EVENTS > $OUTPUT_PATH$MONKEY_LOG
+
+        echo "Manufacturer: "`adb shell getprop ro.product.manufacturer` > $OUTPUT_PATH$MONKEY_LOG
+        echo "Name: "`adb shell getprop ro.product.name` >> $OUTPUT_PATH$MONKEY_LOG
+        echo "Model: "`adb shell getprop ro.product.model` >> $OUTPUT_PATH$MONKEY_LOG
+        echo "Android Version: "`adb shell getprop ro.build.version.release` >> $OUTPUT_PATH$MONKEY_LOG
+        echo "Android SDK: "`adb shell getprop ro.build.version.sdk` >> $OUTPUT_PATH$MONKEY_LOG
+        echo ""  >> $OUTPUT_PATH$MONKEY_LOG
+        echo "Date: "`adb shell getprop ro.build.date` >> $OUTPUT_PATH$MONKEY_LOG
+        echo "Timezone: "`adb shell getprop persist.sys.timezone` >> $OUTPUT_PATH$MONKEY_LOG
+        echo "Locale: "`adb shell getprop persist.sys.locale` >> $OUTPUT_PATH$MONKEY_LOG
+        echo ""  >> $OUTPUT_PATH$MONKEY_LOG
+        echo "-----------------------------------------------" >> $OUTPUT_PATH$MONKEY_LOG
+        echo ""  >> $OUTPUT_PATH$MONKEY_LOG
+
+        adb shell monkey -p $1 --hprof --pct-touch 30 --pct-motion 30 --pct-trackball 0 --pct-nav 0 --pct-majornav 20 --pct-appswitch 10 --pct-anyevent 10 --pct-syskeys 0 -s $SEED -v --throttle 300 $NUMBER_OF_EVENTS >> $OUTPUT_PATH$MONKEY_LOG
         adb logcat -d > $OUTPUT_PATH$LOGCAT_LOG
     fi
 
-    echo Monkey finished: $(date +"%d/%m/%Y %T") >> $OUTPUT_PATH$MONKEY_LOG
+    echo Monkey finished: $(date +"%d.%m.%Y %T") >> $OUTPUT_PATH$MONKEY_LOG
     echo Monkey finished...
     echo
 done
