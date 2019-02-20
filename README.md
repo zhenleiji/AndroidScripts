@@ -137,6 +137,7 @@ Easy way to check hardcoded strings.
 ```
 ~$ ./hardcoded
 ```
+
 ### 12. iscroll
 Easy way to perform infinite scroll (**crtl+C** to stop)
 
@@ -145,6 +146,30 @@ Easy way to perform infinite scroll (**crtl+C** to stop)
 ```
 ~$ ./iscroll
 ```
+
+### 13. animate
+Easy way to set animation speed.
+
+The speed can be:
+- 0   - Animation disable
+- .5  - Animation 0.5x
+- 1   - Animation 1x
+- 1.5 - Animation 1.5x
+- 2   - Animation 2x
+- 5   - Animation 5x
+- 10  - Animation 10x
+
+**HOW TO USE**
+
+Commands:
+```
+~$ ./animate [speed]
+```
+Example :
+```
+~$ ./animate 0
+```
+
 ## Framework
 Useful scripts for framework developer (middleware).
 ### 1. setlocalprop
