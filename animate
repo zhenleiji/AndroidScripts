@@ -1,0 +1,23 @@
+#!/bin/bash
+# Nome: Zhenlei Ji
+# Email: zhenlei.ji@gmail.com
+#
+# Easy way to set animation speed.
+# 0   - Animation disable
+# .5  - Animation 0.5x
+# 1   - Animation 1x
+# 1.5 - Animation 1.5x
+# 2   - Animation 2x
+# 5   - Animation 5x
+# 10  - Animation 10x
+#
+# HOW TO USE
+# Commands:
+# ~$ ./animate [speed]
+#
+# Example :
+# ~$ ./animate 0
+adb shell settings put global window_animation_scale $1
+adb shell settings put global transition_animation_scale $1
+adb shell settings put global animator_duration_scale $1
+
